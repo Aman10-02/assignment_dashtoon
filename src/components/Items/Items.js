@@ -148,8 +148,10 @@ function Items( {notif} ) {
                                 <TextField id="outlined-search" className='anno-input' label="Type image annotation" type="text"  name = 'text' />
                             </ThemeProvider>
                             <ThemeProvider theme={theme2}>
-                            <div className='btn' >
-                                <Button type='submit' variant="outlined" color='primary' style={{marginRight : '1rem'}} >Add</Button>
+                            <div className='btn-anno' >
+                               <div className='btn-add' >
+                                  <Button type='submit' variant="outlined" color='primary'>Add</Button>
+                                </div> 
                                 <Button onClick={() => setIsAnno(false)} variant="outlined" color='primary'>Cancel</Button>
                             </div>
                             </ThemeProvider>
