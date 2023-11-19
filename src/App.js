@@ -1,25 +1,82 @@
-import logo from './logo.svg';
+import { useRef, useState } from 'react';
 import './App.css';
-
+import html2canvas from 'html2canvas'
+import Items from './components/Items/Items';
+import StartBtn from './components/StartBtn/StartBtn';
+import backgroundImage from './images/background.png'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Landing from './components/Landing/Landing';
 function App() {
+  const [start, setStart] = useState(false);
+  const notif = ( {text, err} ) => {
+    if(err){
+      toast.error(text, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }else{
+      toast.success(text, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+}
+  const ele = [];
+  for (let i = 1; i <= 10; i++) {
+    ele.push(<div key={i} id='grid-item' className={`item-${i}`} >
+      <Items notif={notif} />
+    </div>);
+  }
+  const comicRef = useRef(null);
+  const save = async () => {
+    try {
+      const comic = await html2canvas(comicRef.current);
+      const comicURL = comic.toDataURL('image/png');
+      const comicImg = document.createElement('a');
+      comicImg.href = comicURL;
+      comicImg.download = 'comic_img.png';
+      comicImg.click();
+      notif({ text: "Saved Successfully", err: false });
+    } catch (error) {
+      notif({ text: "Could not save", err: false });
+    }
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App" >
+      <ToastContainer />
+      <div className="background" style={{ opacity: start ? 0.5 : 0.7, backgroundImage: `url(${backgroundImage})` }}></div>
+        <div className='header'>
+          <span className='head-text' style={{ color: !start ? "rgb(44, 12, 12)" : "rgb(77, 77, 77)" }} > ComicStrip </span>
+        </div>
+      <div className="image-grid" ref={comicRef} >
+        {
+          start ?
+            ele
+            :
+            <div className='landing' >
+              <Landing />
+            </div>
+        }
+      </div>
+      <div style={{ margin: '1rem' }} >
+        <StartBtn setStart={setStart} start={start} save={save} />
+      </div>
     </div>
   );
 }
 
 export default App;
+
