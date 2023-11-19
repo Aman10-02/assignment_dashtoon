@@ -123,7 +123,7 @@ function Items( {notif} ) {
                         <img className='grid-image' src={URL.createObjectURL(image)} alt="" />
                         <div className='edit-panel' >
                             <ThemeProvider theme= {theme} >
-                                <Button onClick={getAnno} variant="outlined" color='primary'>Add Annotations</Button>
+                                <Button onClick={getAnno} variant="outlined" color='primary'>Annotations</Button>
                             </ThemeProvider>
                             <div className='edit-icon'>
                                 <IconButton onClick={handleEdit} aria-label="edit">
